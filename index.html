@@ -1138,6 +1138,7 @@
     
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script>
+   
         // Preloader
         window.addEventListener('load', function() {
             const preloader = document.querySelector('.preloader');
@@ -1309,10 +1310,47 @@
         // Form Submission
         const form = document.querySelector('.contact-form form');
         form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for your message! I will get back to you soon.');
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const subject = document.getElementById("subject").value;
+    const message = document.getElementById("message").value;
+
+    const token = "8187433543:AAF4sxqnhCohX5WTl7c7CDSiuxfCMhH5_Yw";
+    const chat_id = "5165964724";
+
+    const telegramMessage = `
+📩 New Contact Form Submission:
+👤 Name: ${name}
+📧 Email: ${email}
+📌 Subject: ${subject}
+💬 Message: ${message}
+    `;
+
+    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            chat_id: chat_id,
+            text: telegramMessage
+        })
+    })
+    .then(res => {
+        if (res.ok) {
+            alert(" message send successfully!");
             form.reset();
-        });
+        } else {
+            alert("❌ Failed to send message.");
+        }
+    })
+    .catch(err => {
+        console.error("Error:", err);
+        alert("⚠️ Some error occurred while sending!");
+    });
+});
     </script>
 </body>
 <!-- Floating AI Button -->
